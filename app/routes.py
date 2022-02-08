@@ -140,7 +140,15 @@ def upload_file():
 
     return render_template("upload_file.html",username=username,mail_array=mail_array,tel_array=tel_array)
 
+
+
 @app.route("/", methods=['GET', 'POST'])
+@login_required
+def anasayfa():
+    return render_template("anasayfa.html")
+
+    
+@app.route("/index", methods=['GET', 'POST'])
 @login_required
 def index():
     try:
