@@ -1,10 +1,7 @@
 mysql-connector-python
 secure-smtplib
-weasyprint
 Flask
 pandas
-BeautifulSoup4
-requests
-WTForms==2.3.3
-opencv-python
+
+
 

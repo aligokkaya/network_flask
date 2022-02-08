@@ -1,12 +1,11 @@
 import mysql.connector
 import smtplib
-from flask import Flask, flash, request, redirect, url_for, current_app,send_from_directory,render_template, session
+from flask import flash, request, redirect, url_for, current_app,send_from_directory,render_template, session
 from datetime import  datetime
 from functools import wraps
 import pandas as pd
 from email.mime.text import MIMEText
 import smtplib
-import math
 from pandas import json_normalize
 from app import app
 
