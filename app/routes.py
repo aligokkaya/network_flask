@@ -143,7 +143,6 @@ def upload_file():
 
 
 @app.route("/", methods=['GET', 'POST'])
-@login_required
 def anasayfa():
     return render_template("anasayfa.html")
 
@@ -755,4 +754,3 @@ def delete(id):
         pass
 
     return redirect(url_for("raporlar"))
-
