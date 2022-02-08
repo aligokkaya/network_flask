@@ -1,0 +1,58 @@
+
+{%extends "menu.html"%}
+
+{%block header%}
+Raporlar
+
+{%endblock%}
+
+{%block body%}
+<style>
+  th {
+    border: 20px solid #2e2c2c;
+    padding: 120px;
+    background-color:rgb(85, 82, 82)
+    }
+    .text
+    {
+       position: relative;
+      color: rgb(255, 255, 255);
+    }
+  
+
+</style>
+  <div class="card has-table">
+    <header class="card-header">
+      <p class="card-header-title">
+        <span class="icon"><i class="mdi mdi-ballot"></i></span>
+        Gelir Durum Tablosu 
+      </p>
+      
+    </header>
+  </div>
+    
+  <div class="card has-table">
+    <div class="myDiv">
+      <table>
+        <tr>
+          <th><a href="#">Referans Sayısı</a>
+            <p class='text'> {{len_dataframe}}</p></th>
+          <th><a href="#">Sunucu Sayısı</a>
+            <p class='text'> 3</p></th>
+          <th><a href="#"> Yıllık Tahmin Geliri</a>
+            <p class='text'> {{aylık_tahmin}} TL</p></th>
+        </tr>
+        
+        
+      </table>
+    </div>
+    </div>
+
+
+
+
+
+
+
+</section>
+{%endblock%}

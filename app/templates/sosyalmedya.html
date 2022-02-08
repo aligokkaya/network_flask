@@ -1,0 +1,129 @@
+
+{%extends "menu.html"%}
+
+{%block header%}
+Sosyal Medya Etkileşimi
+
+{%endblock%}
+
+{%block body%}
+<style>
+ 
+  
+
+</style>
+  <div class="card has-table">
+    <header class="card-header">
+     
+    </header>
+  </div>
+  <p class="card-header-title">
+    <span class="icon"><i class="mdi mdi-ballot"></i></span>
+    Etkileşim Yaptıgınız Sosyal Medya Görüntülerini Resim Yükleme Menüsünden Yükleyiniz !!!
+  </p>
+  <form method="POST" action="/sosyalmedya" name="form" onsubmit="return validateForm()">
+    <div class="card has-table">
+  
+      <p class="card-header-title">
+        <span class="icon"><i class="mdi mdi-ballot"></i></span>
+        Sosyal Medya İşlemleri  {{toplam_kayit}}
+      </p>
+     
+     
+       <div class="field is-horizontal">
+        <div class="field-label is-normal">
+          <label class="label">Eklenecek Link.</label>
+        </div>
+        <div class="field-body">
+          <div class="field">
+            <div class="control">
+              <input required value="{{input_mail}}" type="text" name="link" autocomplete="current-password" class="input">
+            </div>
+            <p class="help">Eklenecek Link.</p></div>
+        </div>
+      </div>
+      <div class="field is-horizontal">
+        
+        
+      </div>
+      <div class="field is-horizontal">
+        <div class="field-label is-normal"></div>
+        <div class="field-body">
+          <div class="field">
+            <div class="control">
+              <button name="button1" type="submit" value="value_g" class="button is-primary">
+                Link Ekle
+              </button>
+            </br>
+          </br>
+            </div>
+          </div>
+        </div>
+      </div>
+     </div>
+
+  </form>
+
+
+
+
+
+<form method="POST" action="/sosyalmedya" name="form" onsubmit="return validateForm()">
+
+
+</section>
+</br>
+
+</br>
+<div class="control">
+  <button name="button2" type="submit" value="goruntule" class="button is-primary">
+    Linkleri Görüntüle
+  </button>
+</br>
+</br>
+</div>
+<div class="card has-table">
+  <header class="card-header">
+    <p class="card-header-title">
+      <span class="icon"><i class="mdi mdi-ballot"></i></span>
+      Kayıt Tablosu   {{toplam_kayit}}
+    </p>
+    
+  </header>
+ 
+  <div class="card-content">
+    <div class="b-table has-pagination">
+      <div class="table-wrapper has-mobile-cards">
+        <table id="data" class="table is-fullwidth is-striped is-hoverable is-fullwidth">
+          <tr>
+          <th>Sosyal Medya Linki</th>
+          <th>Tarih</th>
+          
+        </tr>
+
+              
+          <tbody id="myTable">
+              {% for i in range (link_array|length) %}
+      
+      
+              <tr>
+                <td><a href="{{link_array[i]}}">Sosyal Medya Linki</a></td>   
+                 <td>{{date_array[i]}}</td>
+                 
+
+               
+               
+                 
+              </tr>
+             {%endfor%}
+         </tbody>
+
+        </table>
+      </div>
+      
+    </div>
+  </div>
+  
+</form>
+
+{%endblock%}

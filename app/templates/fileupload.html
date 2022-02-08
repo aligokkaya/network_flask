@@ -1,0 +1,69 @@
+
+{%extends "menu.html"%}
+
+{%block header%}
+Raporlar
+
+{%endblock%}
+
+{%block body%}
+<style>
+ 
+  
+
+</style>
+  <div class="card has-table">
+    <header class="card-header">
+     
+    </header>
+  </div>
+  
+  <form method=post action="/fileupload" name="form" enctype = "multipart/form-data" onsubmit="return validateForm()" >
+    <div class="card has-table">
+  
+      <p class="card-header-title">
+        <span class="icon"><i class="mdi mdi-ballot"></i></span>
+        Sosyal Medya Resim İşlemleri      </p>
+     
+     
+       <div class="field is-horizontal">
+        <div class="field-label is-normal">
+          <label class="label">Eklenecek Resim.</label>
+        </div>
+        <div class="field-body">
+          <div class="field">
+            <div class="control">
+                <input class="input"type = "file" name = "file_on" />
+            </div>
+            <p class="help">Resim Ekle</p></div>
+        </div>
+      </div>
+      <div class="field is-horizontal">
+        
+        
+      </div>
+      <div class="field is-horizontal">
+        <div class="field-label is-normal"></div>
+        <div class="field-body">
+          <div class="field">
+            <div class="control">
+              <button name="button1" type="submit" value="value_g" class="button is-primary">
+                Gönder
+              </button>
+            </br>
+          </br>
+            </div>
+          </div>
+        </div>
+      </div>
+     </div>
+
+  </form>
+
+
+
+
+
+</form>
+
+{%endblock%}

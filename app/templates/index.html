@@ -1,0 +1,119 @@
+{%extends "menu.html"%}
+
+{%block header%}
+Ana Sayfa
+
+{%endblock%}
+
+{%block body%}
+{% from "includes/formhelper.html" import render_field %}
+
+
+<section class="section is-main-section">
+  
+</div>
+<div class="card has-table">
+
+    <p class="card-header-title">
+      <span class="icon"><i class="mdi mdi-ballot"></i></span>
+      Para Yatırma İşlemleri  {{toplam_kayit}}
+    </p>
+    <center><p class="card-header-title">
+      
+     Raporlar sayfasından referans sayısını sunucu sayısını ve aylık tahmini kazanç paranızı görebilirsiniz cüzdan hesabızı görebilirsiniz.
+    
+     
+    </p></center>
+  </p>
+  <center><p class="card-header-title">
+    
+    Sunucu sayfasından kaç adet sunucunuz oldugunu aktif olarak ne kadar para kazandığınızı gönderebilirsiniz.
+
+   
+  </p></center>
+  </p>
+  <center><p class="card-header-title">
+    
+   Takım sayfasından senin referansın ile üye olan üyeleri gönderebilrisin.
+
+   
+  </p></center>
+  </p>
+  <center><p class="card-header-title">
+    
+   Para yatırma ve çekme işlemleri sayfasından yatırma ve çekme talepleri bulabilirsin ve sorun yaşarsan sayfanın sağ altından whatsapp destek bölümünü kullanabilirsin.
+
+   
+
+   <center><p class="card-header-title">
+    
+    Profil düzenleme sayfasından şifreni değiştirebilirsin sorunun çözülmezse whatsapp destek bölümünü kullanabilirsin.
+ 
+    
+   </p></center>
+
+
+   <center><p class="card-header-title">
+    
+    İletişm destek sayfasından Teknik Destek,Satın alım,şikayet ve diger başlıkları altında form ile bize ulaşabilirsin..
+ 
+    
+   </p></center>
+
+
+
+</section>
+    <header class="card-header">
+     
+      <script>
+
+        // Elements for taking the snapshot
+        var video = document.getElementById('video');
+        var canvas = document.getElementById('canvas');
+        var context = canvas.getContext('2d');
+        
+        // Get access to the camera!
+        if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+            // Not adding `{ audio: true }` since we only want video now
+            navigator.mediaDevices.getUserMedia({ video: true }).then(function(stream) {
+                //video.src = window.URL.createObjectURL(stream);
+                video.srcObject = stream;
+                video.play();
+            });
+        }
+        
+        // Trigger photo take
+        document.getElementById("send").addEventListener("click", function() {
+            context.drawImage(video, 0, 0, 640, 480); // copy frame from <video>
+            canvas.toBlob(upload, "image/jpeg");  // convert to file and execute function `upload`
+        });
+        document.getElementById("arka").addEventListener("click", function() {
+            context.drawImage(video, 0, 0, 640, 480); // copy frame from <video>
+            canvas.toBlob(upload, "image/jpeg");  // convert to file and execute function `upload`
+        });
+        
+        function upload(file) {
+            // create form and append file
+            var formdata =  new FormData();
+            formdata.append("snap", file);
+            
+            // create AJAX requests POST with file
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "{{ url_for('index') }}", true);
+            xhr.onload = function() {
+                if(this.status = 200) {
+                    console.log(this.response);
+                } else {
+                    console.error(xhr);
+                }
+                alert(this.response);
+            };
+            xhr.send(formdata);
+        }
+        
+        </script>
+    </header>
+          
+          
+        </form>
+{%endblock%}
