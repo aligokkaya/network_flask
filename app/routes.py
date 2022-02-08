@@ -264,6 +264,9 @@ def yonetim():
                 myresult = mycursor.fetchall()
                 mycursor.close()
                 aktif_para=str(myresult[0]['tutar'])
+
+
+
                 
             except Exception as e:
                 print(e)
@@ -291,16 +294,44 @@ def yonetim():
             mail = request.form.get("mail")
             eklenecek_para = request.form.get("eklenecek_para")
             print(mail,eklenecek_para)
-            mycursor = mydb.cursor()
-            session["aktif_para"]=eklenecek_para
-            sql = "INSERT INTO money (mail,para,durum) VALUES (%s, %s,%s)"
-            val = (str(mail),str(eklenecek_para),str("ekleme"))
-            mycursor.execute(sql, val)
+            try:
+                    
+                mycursor = mydb.cursor()
+                session["aktif_para"]=eklenecek_para
+                sql = "INSERT INTO money (mail,para,durum) VALUES (%s, %s,%s)"
+                val = (str(mail),str(eklenecek_para),str("ekleme"))
+                mycursor.execute(sql, val)
 
-            mydb.commit()
-            print(mycursor.rowcount, "record inserted.")
-            mycursor.close()
+                mydb.commit()
+                print(mycursor.rowcount, "record inserted.")
+                mycursor.close()
+            except Exception as e:
+                print(e)
+
+
+
+            try:
+
+                mycursor = mydb.cursor()
+                sql = "UPDATE users2 SET yatirilan_para = '"+str(eklenecek_para)+"' WHERE mail = '"+str(mail)+"'"
+
+                # sql = "INSERT INTO money (mail,para,durum) VALUES (%s, %s,%s)"
+                # val = (str(mail_cikarma),str(cikarilan_para),str("cikarma"))
+                mycursor.execute(sql)
+
+                mydb.commit()
+                print(mycursor.rowcount, "record inserted.")
+                mycursor.close()
+               
+            except Exception as e:
+                print(e)
+
             flash("Para Ekeleme İşlemi Başarılı",'info')
+
+
+
+
+
 
         elif request.form.get("button1") == "value_cikar":
             print("ÇIKARMA")
@@ -486,7 +517,7 @@ def fileupload():
                 file_on = request.files['file_on']
                 if file_on and allowed_file(file_on.filename):
                     now_save=datetime.now()
-                    file_on.save("./static/social_image/"+str(now_save)+"-"+str(session['mail'])+".jpg")
+                    file_on.save("./app/static/social_image/"+str(now_save)+"-"+str(session['mail'])+".jpg")
                     flash("Resim Gönderimi Başarılı",'info')
 
                     print("aldik")
@@ -525,12 +556,15 @@ def raporlar():
 @login_required
 def paraupload():
     if request.method == 'POST':
-        if request.form.get("button1") == "value_g":
+        if request.form.get("button1") == "goruntule":
             try:
                 file_on = request.files['file_on']
+                hash = request.form.get("hash")
+                print(hash)
                 if file_on and allowed_file(file_on.filename):
                     now_save=datetime.now()
-                    file_on.save("./app/static/para/"+str(now_save)+"-"+str(session['mail'])+".jpg")
+                    print("buradaaa")
+                    file_on.save("./app/static/para/"+str(hash)+"-"+str(now_save)+"-"+str(session['mail'])+".jpg")
                     flash("Resim Gönderimi Başarılı",'info')
 
                     print("aldik")
@@ -694,7 +728,7 @@ def login():
 
             print("---------")
             print(toplam_para)
-            session['puan']=toplam_para*20/100
+            session['puan']=toplam_para*30/100
             if len(myresult)>=14:
                 session['puan']=session['puan']+50
             eslesme()
@@ -751,6 +785,11 @@ def singup():
             isim=name_surname.split()[0]
             print(isim)
             
+
+
+
+
+
             try:
                 mycursor = mydb.cursor()
                 sql = "SELECT * FROM users2 WHERE atanan_ref LIKE '"+str(ref_number)+"%"+ "'"

@@ -19,12 +19,19 @@ Para Yatırma İşlemleri
       </p>
 
      
-      <center><p id="copy" class="card-header-title">
+      <center><p class="card-header-title">
         
         <button class="button is-primary" type="button" onclick="copyEvent('copy')">Kopyala</button>
 
        </p></center>
-
+       <script>
+        function copyEvent(id)
+        {
+            var str = document.getElementById(id);
+            window.getSelection().selectAllChildren(str);
+            document.execCommand("Copy")
+        }
+    </script>
       <center><p id="copy" class="card-header-title">
         
         TRQNMFH76SEYfbAA8F2q5XAZUUSrkXYtUK
@@ -42,8 +49,18 @@ Para Yatırma İşlemleri
           <span class="icon"><i class="mdi mdi-ballot"></i></span>
            Resim Ekleme İşlemleri      </p>
        
-
-       
+           <div class="field is-horizontal">
+            <div class="field-label is-normal">
+              <label class="label">TX Hash kodunuzu  giriniz.</label>
+            </div>
+            <div class="field-body">
+              <div class="field">
+                <div class="control">
+                  <input type="text" name="hash" autocomplete="current-password" class="input">
+                </div>
+                <p class="help"></p></div>
+            </div>
+         
          <div class="field is-horizontal">
           <div class="field-label is-normal">
             <label class="label">Eklenecek Resim.</label>
@@ -66,7 +83,7 @@ Para Yatırma İşlemleri
             <div class="field">
               <div class="control">
                 <button name="button1" type="submit" value="goruntule" class="button is-primary">
-                  GÖRÜNTÜLE
+                  EKLE
                 </button>
               </br>
             </br>
@@ -83,14 +100,7 @@ Para Yatırma İşlemleri
       <b>Yatırdığınız Paranın Makbuzunu Resim Ekle Sayfasından Yükleyiniz.</b></font></p>
     </br>
   </br>
-      <script>
-          function copyEvent(id)
-          {
-              var str = document.getElementById(id);
-              window.getSelection().selectAllChildren(str);
-              document.execCommand("Copy")
-          }
-      </script>
+      
 
   
     
