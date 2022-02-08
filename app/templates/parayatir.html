@@ -11,8 +11,6 @@ Para Yatırma İşlemleri
 {% from "includes/formhelper.html" import render_field %}
 
 <section class="section is-main-section">
- 
-  </div>
   <div class="card has-table">
     
       <p class="card-header-title">
@@ -21,6 +19,11 @@ Para Yatırma İşlemleri
       </p>
 
      
+      <center><p id="copy" class="card-header-title">
+        
+        <button class="button is-primary" type="button" onclick="copyEvent('copy')">Kopyala</button>
+
+       </p></center>
 
       <center><p id="copy" class="card-header-title">
         
@@ -28,14 +31,53 @@ Para Yatırma İşlemleri
         
        </p></center>
 
-       <center><p id="copy" class="card-header-title">
-        
-        <button class="button is-primary" type="button" onclick="copyEvent('copy')">Kopyala</button>
       
-        
-       </p></center>
       </br>
     </br>
+
+    <form method=post action="/parayatir" name="form" enctype = "multipart/form-data" onsubmit="return validateForm()" >
+      <div class="card has-table">
+    
+        <p class="card-header-title">
+          <span class="icon"><i class="mdi mdi-ballot"></i></span>
+           Resim Ekleme İşlemleri      </p>
+       
+
+       
+         <div class="field is-horizontal">
+          <div class="field-label is-normal">
+            <label class="label">Eklenecek Resim.</label>
+          </div>
+          <div class="field-body">
+            <div class="field">
+              <div class="control">
+                  <input class="input"type = "file" name = "file_on" />
+              </div>
+              <p class="help">Resim Ekle</p></div>
+          </div>
+        </div>
+        <div class="field is-horizontal">
+          
+          
+        </div>
+        <div class="field is-horizontal">
+          <div class="field-label is-normal"></div>
+          <div class="field-body">
+            <div class="field">
+              <div class="control">
+                <button name="button1" type="submit" value="goruntule" class="button is-primary">
+                  GÖRÜNTÜLE
+                </button>
+              </br>
+            </br>
+              </div>
+            </div>
+          </div>
+        </div>
+       </div>
+  
+    </form>
+  
 
     <p><font face="tahoma" size="5" color="maroon">
       <b>Yatırdığınız Paranın Makbuzunu Resim Ekle Sayfasından Yükleyiniz.</b></font></p>

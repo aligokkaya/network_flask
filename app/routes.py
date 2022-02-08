@@ -68,22 +68,29 @@ def eslesme():
     sag_ayak=mycursor2.execute("SELECT * FROM users2 WHERE atanan_ref LIKE '"+str(session['atanan_ref'])+'2'+"%"+ "'")
     mycursor.execute(sol_ayak)
     mycursor2.execute(sag_ayak)
-    myresult1 = mycursor.fetchall()
-    myresult2 = mycursor2.fetchall()
-    # print(session['atanan_ref'])
-    print('sol_ayak+++++++++++++++++++++++++++++++++++++++++++++')
-    print((myresult1))
-    for i in range(len(myresult1)):
-            sol_ayak_toplam_para=sol_ayak_toplam_para+myresult1[i]['yatirilan_para']
-            print("---------")
-    for i in range(len(myresult2)):
-            sag_ayak_toplam_para=sag_ayak_toplam_para+myresult2[i]['yatirilan_para']
-            print("---------")
-    
-    
-    esle=min(sol_ayak_toplam_para,sag_ayak_toplam_para)
-    print((esle))
-    session['puan']=session['puan']+(esle/10)
+   
+    try:
+        session['ekipsayisi'] = int(len(sol_ayak))+int(len(sag_ayak))
+        myresult1 = mycursor.fetchall()
+        myresult2 = mycursor2.fetchall()
+        # print(session['atanan_ref'])
+        print('sol_ayak+++++++++++++++++++++++++++++++++++++++++++++')
+        print((myresult1))
+        for i in range(len(myresult1)):
+                sol_ayak_toplam_para=sol_ayak_toplam_para+myresult1[i]['yatirilan_para']
+                print("---------")
+        for i in range(len(myresult2)):
+                sag_ayak_toplam_para=sag_ayak_toplam_para+myresult2[i]['yatirilan_para']
+                print("---------")
+        
+        
+        esle=min(sol_ayak_toplam_para,sag_ayak_toplam_para)
+        print((esle))
+        session['puan']=session['puan']+(esle/10)
+    except:
+        session['ekipsayisi']=1
+        session['puan']=session['puan']
+   
 
 
     return True
@@ -378,6 +385,21 @@ def sosyalmedya():
     link_array = []
     date_array = []
     if request.method == 'POST':
+        if request.form.get("button3") == "value_2":
+            print("burda")
+            try:
+
+                file_on = request.files['file_on']
+                if file_on and allowed_file(file_on.filename):
+                    now_save=datetime.now()
+                    file_on.save("./app/static/social_image/"+str(now_save)+"-"+str(session['mail'])+".jpg")
+                    flash("Resim Gönderimi Başarılı",'info')
+
+                    print("aldik")
+            except Exception as e:
+                flash("Resim Gönderimi Başarısız!!",'info')
+                print(e)
+
         if request.form.get("button1") == "value_g":
             link = request.form.get("link")
             print(link)
@@ -498,15 +520,30 @@ def raporlar():
 
 
 
-@app.route("/makbuz_page")
-def cekme():
-    return render_template("makbuzpage.html")
 
+@app.route("/parayatir", methods=['GET', 'POST'])
+@login_required
+def paraupload():
+    if request.method == 'POST':
+        if request.form.get("button1") == "value_g":
+            try:
+                file_on = request.files['file_on']
+                if file_on and allowed_file(file_on.filename):
+                    now_save=datetime.now()
+                    file_on.save("./app/static/para/"+str(now_save)+"-"+str(session['mail'])+".jpg")
+                    flash("Resim Gönderimi Başarılı",'info')
 
+                    print("aldik")
+            except Exception as e:
+                flash("Resim Gönderimi Başarısız!!",'info')
+                print(e)
+
+    
+    return render_template("parayatir.html")
 
 @app.route("/cekme", methods=['GET', 'POST'])
 @login_required
-def makbuz_page():
+def cekme():
     tutar_array = []
     cuzdanNO = []
     date_array = []
@@ -703,7 +740,7 @@ def singup():
     if request.method == 'POST':
         if request.form.get("button") == "value":
             name_surname = request.form.get("name_surname")
-            tc=request.form.get('tc')
+            tc=0
             email = request.form.get("email")
             password = request.form.get("pass")
             tel = request.form.get("tel")

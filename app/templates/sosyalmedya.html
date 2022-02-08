@@ -19,7 +19,7 @@ Sosyal Medya Etkileşimi
   </div>
   <p class="card-header-title">
     <span class="icon"><i class="mdi mdi-ballot"></i></span>
-    Etkileşim Yaptıgınız Sosyal Medya Görüntülerini Resim Yükleme Menüsünden Yükleyiniz !!!
+    Etkileşim Yaptıgınız Sosyal Medya Görüntülerini Resim Yükleme Alanından Yükleyiniz !!!
   </p>
   <form method="POST" action="/sosyalmedya" name="form" onsubmit="return validateForm()">
     <div class="card has-table">
@@ -68,11 +68,52 @@ Sosyal Medya Etkileşimi
 
 
 
-<form method="POST" action="/sosyalmedya" name="form" onsubmit="return validateForm()">
 
 
+  <form method=post action="/sosyalmedya" name="form" enctype = "multipart/form-data" onsubmit="return validateForm()" >
+    <div class="card has-table">
+  
+      <p class="card-header-title">
+        <span class="icon"><i class="mdi mdi-ballot"></i></span>
+         Resim Ekleme İşlemleri      </p>
+     
+     
+       <div class="field is-horizontal">
+        <div class="field-label is-normal">
+          <label class="label">Eklenecek Resim.</label>
+        </div>
+        <div class="field-body">
+          <div class="field">
+            <div class="control">
+                <input class="input"type = "file" name = "file_on" />
+            </div>
+            <p class="help">Resim Ekle</p></div>
+        </div>
+      </div>
+      <div class="field is-horizontal">
+        
+        
+      </div>
+      <div class="field is-horizontal">
+        <div class="field-label is-normal"></div>
+        <div class="field-body">
+          <div class="field">
+            <div class="control">
+              <button name="button3" type="submit" value="value_2" class="button is-primary">
+                Gönder
+              </button>
+            </br>
+          </br>
+            </div>
+          </div>
+        </div>
+      </div>
+     </div>
+  
+  </form>
 </section>
 </br>
+<form method="POST" action="/sosyalmedya" name="form" onsubmit="return validateForm()">
 
 </br>
 <div class="control">
@@ -107,7 +148,8 @@ Sosyal Medya Etkileşimi
       
       
               <tr>
-                <td><a href="{{link_array[i]}}">Sosyal Medya Linki</a></td>   
+                <td>{{i}}</td> 
+                <td><a href="{{link_array[i]}}">Sosyal Etkileşim Linki</a></td>   
                  <td>{{date_array[i]}}</td>
                  
 
@@ -125,5 +167,8 @@ Sosyal Medya Etkileşimi
   </div>
   
 </form>
+
+
+
 
 {%endblock%}

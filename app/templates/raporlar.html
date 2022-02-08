@@ -138,12 +138,7 @@
             <span class="menu-item-label">Resim Yükle</span>
           </a>
         </li>
-        <li>
-          <a href="update" class="has-icon">
-            <span class="icon"><i class="mdi mdi-table"></i></span>
-            <span class="menu-item-label">Sunucu Durumu</span>
-          </a>
-        </li>
+       
         <li>
           <a href="upload_file" class="has-icon">
             <span class="icon"><i class="mdi mdi-table"></i></span>
@@ -151,7 +146,7 @@
           </a>
         </li>
         <li>
-          <a href="makbuz_page" class="has-icon">
+          <a href="parayatir" class="has-icon">
             <span class="icon"><i class="mdi mdi-table"></i></span>
             <span class="menu-item-label">Para Yatırma & Çekme</span>
           </a>
@@ -277,7 +272,7 @@
 
            
           </br>
-      <p>  Sunucu Sayısı = ✔️ 3</p>
+      <p>  Ekip Sayısı = ✔️ {{session['ekipsayisi']}}</p>
       <th>
       </br>
         </br>
@@ -300,8 +295,9 @@
               <th>
               
             </br>
-          </br>
-      <p>   Yıllık Tahmin Geliri= {{aylık_tahmin}} TL</p>
+         
+
+      <p>   Net Gelir = {{ session['puan'] }} TL       </p>
       <th>
       </br>
         </br>
