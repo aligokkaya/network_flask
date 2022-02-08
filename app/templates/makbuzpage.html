@@ -1,30 +1,73 @@
 {%extends "menu.html"%}
 
 {%block header%}
-Para Yatırma & Çekme İşlemleri
+Para Yatırma İşlemleri
 
 {%endblock%}
 
 {%block body%}
+
+
 {% from "includes/formhelper.html" import render_field %}
+
 <section class="section is-main-section">
-  
+ 
   </div>
   <div class="card has-table">
-  
+    
       <p class="card-header-title">
         <span class="icon"><i class="mdi mdi-ballot"></i></span>
         Para Yatırma İşlemleri  {{toplam_kayit}}
       </p>
+
+     
+
+      <center><p id="copy" class="card-header-title">
+        
+        TRQNMFH76SEYfbAA8F2q5XAZUUSrkXYtUK
+        
+       </p></center>
+
+       <center><p id="copy" class="card-header-title">
+        
+        <button class="button is-primary" type="button" onclick="copyEvent('copy')">Kopyala</button>
+      
+        
+       </p></center>
+      </br>
+    </br>
+
+    <p><font face="tahoma" size="5" color="maroon">
+      <b>Yatırdığınız Paranın Makbuzunu Resim Ekle Sayfasından Yükleyiniz.</b></font></p>
+    </br>
+  </br>
+      <script>
+          function copyEvent(id)
+          {
+              var str = document.getElementById(id);
+              window.getSelection().selectAllChildren(str);
+              document.execCommand("Copy")
+          }
+      </script>
+
+  
+    
+  
       <center><p class="card-header-title">
         
-       Soguk cüzdan hesabından TRQNMFH76SEYfbAA8F2q5XAZUUSrkXYtUK numaralı cüzdan hesabına ücretsiz para gönderebilirsin.
+       Soguk cüzdan hesabından &nbsp;
+       <font face="tahoma" size="4  " color="maroon"> 
+       <b> TRQNMFH76SEYfbAA8F2q5XAZUUSrkXYtUK </b></font> &nbsp;
+       numaralı cüzdan hesabına ücretsiz para gönderebilirsin.
       
        
       </p></center>
       <center><p class="card-header-title">
-        
-        TRX  (TRC20) ağını kullanarak USDT TetherUS olarak ödemeyi gerçekleştirebilirsiniz.
+        <font face="tahoma" size="4  " color="maroon"> &nbsp;
+        TRX  (TRC20) </font>&nbsp;
+        ağını kullanarak <font face="tahoma" size="4  " color="maroon"> &nbsp;
+          USDT TetherUS </font>&nbsp;
+          olarak ödemeyi gerçekleştirebilirsiniz.
        
         
        </p></center>
@@ -38,19 +81,10 @@ Para Yatırma & Çekme İşlemleri
         
        </p></center>
     </p>
-    <center><p class="card-header-title">
-      
-     En düşük yazılım paketi 50 $
-     
-    </p></center>
+    
     
     </p>
-    <center><p class="card-header-title">
-      
-     En yüksek yazılım paketi 100 $
-
-     
-    </p></center>
+    
     </p>
     <center><p class="card-header-title">
       
@@ -59,64 +93,8 @@ Para Yatırma & Çekme İşlemleri
      
     </p></center>
      </div>
-     <form method="POST" action="/makbuz_page" name="form" onsubmit="return validateForm()">
-     <div class="card has-table">
-  
-      <p class="card-header-title">
-        <span class="icon"><i class="mdi mdi-ballot"></i></span>
-        Para Çekme İşlemleri  {{toplam_kayit}}
-      </p>
-      <center><p class="card-header-title">
-        
-       Kazanılan Toplam Para : 
-      </p></center>
-      <p class="card-header-title">
-        
-        Minimum çekme isteği 10 $
-        </p>
-      <p class="card-header-title">
-        
-       Çekme isteği gönderikten sonra 1-3 saat arasında çekmek istenilen tutar soguk cüzdanınıza aktarılacaktır.
-       </p>
-       <div class="field is-horizontal">
-        <div class="field-label is-normal">
-          <label class="label">Çekmek İstenilen Tutar.</label>
-        </div>
-        <div class="field-body">
-          <div class="field">
-            <div class="control">
-              <input type="text" name="tutar" autocomplete="current-password" class="input">
-            </div>
-            <p class="help">Çekmek İstenilen Tutar.</p></div>
-        </div>
-      </div>
-      <div class="field is-horizontal">
-        <div class="field-label is-normal">
-          <label class="label">Soguk Cüzdan Numarasını giriniz.</label>
-        </div>
-        <div class="field-body">
-          <div class="field">
-            <div class="control">
-              <input type="text" name="cuzdan" autocomplete="current-password" class="input">
-            </div>
-            <p class="help">Soguk Cüzdan Numarasını giriniz.</p></div>
-        </div>
-      </div>
-      <div class="field is-horizontal">
-        <div class="field-label is-normal"></div>
-        <div class="field-body">
-          <div class="field">
-            <div class="control">
-              <button name="button" type="submit" value="value" class="button is-primary">
-                Çekme İstegi Gönder
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-     </div>
-    </form>
-
-
+     
 </section>
+
+
 {%endblock%}

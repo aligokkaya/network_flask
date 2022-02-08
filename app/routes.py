@@ -139,11 +139,13 @@ def upload_file():
                 pass
 
     return render_template("upload_file.html",username=username,mail_array=mail_array,tel_array=tel_array)
-
-
-
 @app.route("/", methods=['GET', 'POST'])
 def anasayfa():
+    return render_template("anasayfa.html")
+
+
+@app.route("/anasayfa", methods=['GET', 'POST'])
+def anasayfa1():
     return render_template("anasayfa.html")
 
     
@@ -494,11 +496,45 @@ def raporlar():
         print(e)
     return render_template("raporlar.html",len_dataframe=len_dataframe,aylık_tahmin=aylık_tahmin)
 
-@app.route("/makbuz_page", methods=['GET', 'POST'])
+
+
+@app.route("/makbuz_page")
+def cekme():
+    return render_template("makbuzpage.html")
+
+
+
+@app.route("/cekme", methods=['GET', 'POST'])
 @login_required
 def makbuz_page():
-
+    tutar_array = []
+    cuzdanNO = []
+    date_array = []
+    value=[]
     if request.method == 'POST':
+        if request.form.get("button") == "goruntule":
+            print("girdi")
+            mycursor = mydb.cursor(buffered=True)
+           
+        
+            sql = "SELECT * FROM cekme_istegi WHERE mail= '"+str(session['mail'])+"'"
+            # sql = "SELECT * FROM users2 WHERE ust_referans= '"+str(session['atanan_ref']) + "'"
+            mycursor.execute(sql)
+            myresult = mycursor.fetchall()
+            print(myresult)
+
+            for i in myresult:
+                print(i[4])
+                print(type(i[4]))
+                tutar_array.append(str(i[2]))
+                cuzdanNO.append(str(i[3]))
+                date_array.append(str(i[4]))
+                if i[5]==1:
+                    value.append("Onaylandı")
+                if i[5]==0:
+                    value.append("Beklemede")
+
+
 
         if request.form.get("button") == "value":
             tutar = request.form.get("tutar")
@@ -529,7 +565,7 @@ def makbuz_page():
 
     
 
-    return render_template("makbuzpage.html")
+    return render_template("cekme.html",date_array=date_array,tutar_array=tutar_array,cuzdanNO=cuzdanNO,value=value)
 
 @app.route("/forms", methods=['GET', 'POST'])
 @login_required
@@ -661,7 +697,6 @@ def login():
 
 
 @app.route("/singup", methods=['GET', 'POST'])
-# @login_required
 def singup():
     kayit_durumu = ""
     new_ref=""
@@ -686,6 +721,7 @@ def singup():
 
                 myresult = mycursor.fetchall()
                 print(myresult)
+                print(len(myresult))
                 if (len(myresult)) ==1:
                    print(myresult)
                    new_ref=str(ref_number)+"1"
@@ -720,8 +756,8 @@ def singup():
 
                 mycursor = mydb.cursor()
 
-                sql = "INSERT INTO users2 (name_surname,tc,mail,password,tel,referans,atanan_ref,kayit_tarihi,yetki) VALUES (%s, %s,%s, %s,%s,%s,%s,%s,%s,%s)"
-                val = (str(isim),str(tc),str(email),str(password),str(tel),str(ref_number),str(new_ref),str(datetime.now()),str(0),str(ust_ref_number))
+                sql = "INSERT INTO users2 (name_surname,tc,mail,password,tel,referans,atanan_ref,kayit_tarihi,yetki,yatirilan_para,ust_referans) VALUES (%s, %s,%s, %s,%s,%s,%s,%s,%s,%s,%s)"
+                val = (str(isim),str(tc),str(email),str(password),str(tel),str(ref_number),str(new_ref),str(datetime.now()),str(0),str(0),str(ust_ref_number))
                 mycursor.execute(sql, val)
 
                 mydb.commit()
@@ -731,6 +767,9 @@ def singup():
                 # flash("Kayit oluşturuldu",'info')
                 return redirect(url_for("login"))          
     return render_template("singup.html",kayit_durumu=kayit_durumu)
+
+
+
 
 
 @app.route("/logout")

@@ -1,0 +1,121 @@
+{%extends "menu.html"%}
+
+{%block header%}
+Para Çekme İşlemleri
+
+{%endblock%}
+
+{%block body%}
+
+
+{% from "includes/formhelper.html" import render_field %}
+
+<section class="section is-main-section">
+ 
+     <form method="POST" action="/makbuz_page" name="form" onsubmit="return validateForm()">
+     <div class="card has-table">
+  
+      <p class="card-header-title">
+        <span class="icon"><i class="mdi mdi-ballot"></i></span>
+        Para Çekme İşlemleri  {{toplam_kayit}}
+      </p>
+      <center><p class="card-header-title">
+        
+       Kazanılan Toplam Para : 
+      </p></center>
+      <p class="card-header-title">
+        
+        Minimum çekme isteği 10 $
+        </p>
+      <p class="card-header-title">
+        
+       Çekme isteği gönderikten sonra 1-3 saat arasında çekmek istenilen tutar soguk cüzdanınıza aktarılacaktır.
+       </p>
+       <div class="field is-horizontal">
+        <div class="field-label is-normal">
+          <label class="label">Çekmek İstenilen Tutar.</label>
+        </div>
+        <div class="field-body">
+          <div class="field">
+            <div class="control">
+              <input type="text" name="tutar" autocomplete="current-password" class="input">
+            </div>
+            <p class="help">Çekmek İstenilen Tutar.</p></div>
+        </div>
+      </div>
+      <div class="field is-horizontal">
+        <div class="field-label is-normal">
+          <label class="label">Soguk Cüzdan Numarasını giriniz.</label>
+        </div>
+        <div class="field-body">
+          <div class="field">
+            <div class="control">
+              <input type="text" name="cuzdan" autocomplete="current-password" class="input">
+            </div>
+            <p class="help">Soguk Cüzdan Numarasını giriniz.</p></div>
+        </div>
+      </div>
+      <div class="field is-horizontal">
+        <div class="field-label is-normal"></div>
+        <div class="field-body">
+          <div class="field">
+            <div class="control">
+              <button name="button" type="submit" value="value" class="button is-primary">
+                Çekme İstegi Gönder
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+     </div>
+    </form>
+    <p class="card-header-title">
+      <span class="icon"><i class="mdi mdi-ballot"></i></span>
+      Çekme İstekleri
+    </p>
+
+    <form method="POST" action="/makbuz_page" name="form" onsubmit="return validateForm()">
+      <button name="button" type="submit" value="goruntule" class="button is-primary">
+        GÖRÜNTÜLE
+      </button>
+    <div class="card-content">
+      <div class="b-table has-pagination">
+        <div class="table-wrapper has-mobile-cards">
+          <table id="data" class="table is-fullwidth is-striped is-hoverable is-fullwidth">
+            <tr>
+            <th>Çekmek İstenilen Tutar</th>
+          
+            <th>Cüzdan No</th>
+            <th>Tarih</th>
+            <th>Durumu</th>
+           
+          </tr>
+
+                
+            <tbody id="myTable">
+                {% for i in range (date_array|length) %}
+        
+        
+                <tr>
+                 
+                   <td>{{tutar_array[i]}}</td>
+                   <td>{{cuzdanNO[i]}}</td>   
+                   <td>{{date_array[i]}}</td>
+                   <td>{{value[i]}}</td>
+
+                 
+                   
+                </tr>
+               {%endfor%}
+           </tbody>
+
+          </table>
+        </div>
+        
+      </div>
+    </div>
+    </form>
+</section>
+
+
+{%endblock%}
