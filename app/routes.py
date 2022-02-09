@@ -88,7 +88,7 @@ def eslesme():
         print((esle))
         session['puan']=session['puan']+(esle/10)
     except:
-        session['ekipsayisi']=1
+        session['ekipsayisi']=session['atanan_ref']
         session['puan']=session['puan']
    
 
@@ -123,29 +123,34 @@ def upload_file():
     username =[]
     mail_array = []
     tel_array = []
+    ust_referans = []
+    atanan_referans = []
     if request.method == 'POST':
         if request.form.get("button") == "value":
-            print("girdi")
+            # print("girdi")
             mycursor = mydb.cursor(dictionary=True)
-            print(str(session['atanan_ref']))
+            # print(str(session['atanan_ref']))
             mycursor.execute("SELECT * FROM users2 WHERE atanan_ref LIKE '"+str(session['atanan_ref'])+"%"+ "'")
             
             myresult = mycursor.fetchall()
-            print(myresult)
+            # print(myresult)
             mycursor.close()
             dataframe = pd.DataFrame.from_dict(myresult)
             print("--------------")
-
+            print(dataframe)
             try:    
                 dataframe=(dataframe.iloc[1::])
                 for i in range(len(dataframe)):
+                    
                     username.append(str(dataframe['name_surname'].iloc[i]))
                     mail_array.append(str(dataframe['mail'].iloc[i]))
                     tel_array.append(str(dataframe['tel'].iloc[i]))
+                    atanan_referans.append(str(dataframe['atanan_ref'].iloc[i]))
+                    ust_referans.append(str(dataframe['ust_referans'].iloc[i]))
             except:
                 pass
 
-    return render_template("upload_file.html",username=username,mail_array=mail_array,tel_array=tel_array)
+    return render_template("upload_file.html",atanan_referans=atanan_referans,ust_referans=ust_referans,username=username,mail_array=mail_array,tel_array=tel_array)
 @app.route("/", methods=['GET', 'POST'])
 def anasayfa():
     return render_template("anasayfa.html")
@@ -543,6 +548,7 @@ def raporlar():
         mycursor.close()
         dataframe = pd.DataFrame.from_dict(myresult)
         len_dataframe=len(dataframe)
+        session['ekip_sayisi']=int(len_dataframe)+1
 
         aylık_tahmin=int(len_dataframe)*180*1.13*int(session['puan'])
     except Exception as e:
