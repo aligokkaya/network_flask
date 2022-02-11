@@ -115,17 +115,17 @@ def download_file(name):
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
-dataframe=[]
-username =[]
-mail_array = []
-tel_array = []
-ust_referans = []
-atanan_referans = []
+
 @app.route("/upload_file", methods=['GET', 'POST'])
 @login_required
 def upload_file():
     
-    global dataframe,username,mail_array,tel_array,ust_referans,atanan_referans
+    dataframe=[]
+    username =[]
+    mail_array = []
+    tel_array = []
+    ust_referans = []
+    atanan_referans = []
     if request.method == 'POST':
         if request.form.get("button") == "value":
             # print("girdi")
@@ -138,7 +138,7 @@ def upload_file():
             mycursor.close()
             dataframe = pd.DataFrame.from_dict(myresult)
             print("--------------")
-            print(dataframe)
+           
             try:    
                 # dataframe=(dataframe.iloc[1::])
                 for i in range(len(dataframe)):
@@ -526,49 +526,63 @@ def sosyalmedya():
                 print(e)
 
         if request.form.get("button1") == "value_g":
-            link = request.form.get("link")
-            print(link)
-            print(session['mail'])
+
+            if session['atanan_para']>0:
+
+
+
+
+
+
+
             
-            link_date=(datetime.now())
-            link_date=str(link_date)
-
-            try:
+                link = request.form.get("link")
+                print(link)
+                print(session['mail'])
+                
                 link_date=(datetime.now())
-                print(link_date)
                 link_date=str(link_date)
-                link_date=(link_date[0:10])
-                baslangic=link_date+" 00:00:00"
-                bitis=link_date+" 23:59:00"
-                mycursor = mydb.cursor()
-                mycursor.execute("select*from social where mail='"+str(session['mail'])+"' and  link_date>='"+baslangic+"' and link_date<='"+bitis+"'       ")
-                myresult = mycursor.fetchall()
-                # print(myresult)
 
-                print(len(myresult))
+                try:
+                    link_date=(datetime.now())
+                    print(link_date)
+                    link_date=str(link_date)
+                    link_date=(link_date[0:10])
+                    baslangic=link_date+" 00:00:00"
+                    bitis=link_date+" 23:59:00"
+                    mycursor = mydb.cursor()
+                    mycursor.execute("select*from social where mail='"+str(session['mail'])+"' and  link_date>='"+baslangic+"' and link_date<='"+bitis+"'       ")
+                    myresult = mycursor.fetchall()
+                    # print(myresult)
 
-                if len(myresult)<2:
-                    try:
+                    print(len(myresult))
 
-                        mycursor = mydb.cursor()
-                        sql = "INSERT INTO social (mail,link,link_date,value) VALUES (%s, %s,%s, %s)"
+                    if len(myresult)<2:
+                        try:
 
-                        val = (str(session['mail']),str(link),str(link_date),0)
-                        mycursor.execute(sql, val)
+                            mycursor = mydb.cursor()
+                            sql = "INSERT INTO social (mail,link,link_date,value) VALUES (%s, %s,%s, %s)"
 
-                        mydb.commit()
-                        print(mycursor.rowcount, "record inserted.")
-                        mycursor.close()
-                        flash("Link Ekleme Başarılı",'info')
+                            val = (str(session['mail']),str(link),str(link_date),0)
+                            mycursor.execute(sql, val)
 
-                    except Exception as e:
-                        print(e)
-                else:
-                    flash("Günlük Limit Doldu 24 Saat Sonra Tekrar Deneyin",'info')
+                            mydb.commit()
+                            print(mycursor.rowcount, "record inserted.")
+                            mycursor.close()
+                            flash("Link Ekleme Başarılı",'info')
 
-            except Exception as e:
-                flash("Link Ekleme Başarısız Oldu Daha Sonra Tekrar Deneyin",'info')
-                print(e)
+                        except Exception as e:
+                            print(e)
+                    else:
+                        flash("Günlük Limit Doldu 24 Saat Sonra Tekrar Deneyin",'info')
+
+                except Exception as e:
+                    flash("Link Ekleme Başarısız Oldu Daha Sonra Tekrar Deneyin",'info')
+                    print(e)
+            else:
+                # flash("Link Ekleme Başarısız Ödeme Yapmadınız",'info')
+                flash("Link Ekleme Başarısız Link Eklemek İçin Lütfen Paket Ödemesi Yapınız !",'info')
+                
      
         if request.form.get("button2") == "goruntule":
             link_date=(datetime.now())
@@ -891,60 +905,64 @@ def singup():
 
 
 
+            if  session['atanan_para']>0:
 
 
-            try:
+                try:
+                    mycursor = mydb.cursor()
+                    sql = "SELECT * FROM users2 WHERE atanan_ref LIKE '"+str(ref_number)+"%"+ "'"
+                    mycursor.execute(sql)
+
+                    myresult = mycursor.fetchall()
+                    print(myresult)
+                    print(len(myresult))
+                    if (len(myresult)) ==1:
+                        print(myresult)
+                        new_ref=str(ref_number)+"1"
+                    elif len(myresult) == 2:
+                        new_ref=str(ref_number)+"2"
+                    else:
+                        kayit_durumu="Referans Numarası Hatalı oluşturulamadi"
+                        return render_template("kayit_ol.html",kayit_durumu=kayit_durumu)
+                except Exception as e:
+                    print(e)
+                    kayit_durumu="Kayit oluşturulamadi"
+                    return render_template("kayit_ol.html",kayit_durumu=kayit_durumu)
+                # if not len(ref_number)==9:
+                #     new_Ref=(str(random.random())[2:11])
+                #     # print("burada")
+                #     print("if ref",new_Ref)
+                ##aynı mail olmamalı dikkat 
+
                 mycursor = mydb.cursor()
-                sql = "SELECT * FROM users2 WHERE atanan_ref LIKE '"+str(ref_number)+"%"+ "'"
+
+                sql = "SELECT * FROM users2 WHERE mail ='"+str(email)+"'"
+
                 mycursor.execute(sql)
 
                 myresult = mycursor.fetchall()
-                print(myresult)
-                print(len(myresult))
-                if (len(myresult)) ==1:
-                   print(myresult)
-                   new_ref=str(ref_number)+"1"
-                elif len(myresult) == 2:
-                    new_ref=str(ref_number)+"2"
+                if (len(myresult))==1:
+                    print("Bundan var")
+                    kayit_durumu = "Böyle bir mail adresi mevcut !!"
+                
                 else:
-                    kayit_durumu="Referans Numarası Hatalı oluşturulamadi"
-                    return render_template("kayit_ol.html",kayit_durumu=kayit_durumu)
-            except Exception as e:
-                print(e)
-                kayit_durumu="Kayit oluşturulamadi"
-                return render_template("kayit_ol.html",kayit_durumu=kayit_durumu)
-            # if not len(ref_number)==9:
-            #     new_Ref=(str(random.random())[2:11])
-            #     # print("burada")
-            #     print("if ref",new_Ref)
-            ##aynı mail olmamalı dikkat 
+                    print("yok kayit yapilabilir")
 
-            mycursor = mydb.cursor()
+                    mycursor = mydb.cursor()
 
-            sql = "SELECT * FROM users2 WHERE mail ='"+str(email)+"'"
+                    sql = "INSERT INTO users2 (name_surname,tc,mail,password,tel,referans,atanan_ref,kayit_tarihi,yetki,yatirilan_para,ust_referans,sehir) VALUES (%s, %s,%s, %s,%s,%s,%s,%s,%s,%s,%s,%s)"
+                    val = (str(name_surname),str(tc),str(email),str(password),str(tel),str(ref_number),str(new_ref),str(datetime.now()),str(0),str(0),str(ust_ref_number),str(sehir))
+                    mycursor.execute(sql, val)
 
-            mycursor.execute(sql)
-
-            myresult = mycursor.fetchall()
-            if (len(myresult))==1:
-                print("Bundan var")
-                kayit_durumu = "Böyle bir mail adresi mevcut !!"
-            
+                    mydb.commit()
+                    print(mycursor.rowcount, "record inserted.")
+                    mycursor.close()
+                    kayit_durumu = "Kayit oluşturuldu"
+                    flash("Kayit oluşturuldu",'info')
+                    return redirect(url_for("index"))    
             else:
-                print("yok kayit yapilabilir")
-
-                mycursor = mydb.cursor()
-
-                sql = "INSERT INTO users2 (name_surname,tc,mail,password,tel,referans,atanan_ref,kayit_tarihi,yetki,yatirilan_para,ust_referans,sehir) VALUES (%s, %s,%s, %s,%s,%s,%s,%s,%s,%s,%s,%s)"
-                val = (str(name_surname),str(tc),str(email),str(password),str(tel),str(ref_number),str(new_ref),str(datetime.now()),str(0),str(0),str(ust_ref_number),str(sehir))
-                mycursor.execute(sql, val)
-
-                mydb.commit()
-                print(mycursor.rowcount, "record inserted.")
-                mycursor.close()
-                kayit_durumu = "Kayit oluşturuldu"
-                flash("Kayit oluşturuldu",'info')
-                return redirect(url_for("index"))          
+                flash("Kayit Oluşturmak İçin Lütfen Paket Ödemesi Yapınız !",'info')
+                return redirect(url_for("index"))    
     return render_template("kayit_ol.html",kayit_durumu=kayit_durumu)
 
 
