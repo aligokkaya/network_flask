@@ -1,7 +1,8 @@
+import cv2
 import mysql.connector
 import smtplib
 from flask import flash, request, redirect, url_for, current_app,send_from_directory,render_template, session
-from datetime import  datetime
+from datetime import  date, datetime
 from functools import wraps
 import pandas as pd
 from email.mime.text import MIMEText
@@ -114,17 +115,17 @@ def download_file(name):
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
-
+dataframe=[]
+username =[]
+mail_array = []
+tel_array = []
+ust_referans = []
+atanan_referans = []
 @app.route("/upload_file", methods=['GET', 'POST'])
 @login_required
 def upload_file():
-    print(session['referans'])
-    dataframe=[]
-    username =[]
-    mail_array = []
-    tel_array = []
-    ust_referans = []
-    atanan_referans = []
+    
+    global dataframe,username,mail_array,tel_array,ust_referans,atanan_referans
     if request.method == 'POST':
         if request.form.get("button") == "value":
             # print("girdi")
@@ -149,6 +150,77 @@ def upload_file():
                     ust_referans.append(str(dataframe['ust_referans'].iloc[i]))
             except:
                 pass
+        if request.form.get("button") == "value2":
+            ref = request.form.get("ref")
+            print(ref)
+
+            mycursor = mydb.cursor()
+            mycursor.execute("SELECT * FROM users2 WHERE atanan_ref LIKE '"+str(ref)+"%"+ "'   ORDER BY id ASC     LIMIT 3   ")
+            ilk_ref = []
+            mail_array = []
+            myresult = mycursor.fetchall()
+            for i in myresult:
+                print(i)
+                
+                ilk_ref.append(str(i[7]))
+                mail_array.append(str(i[3]))
+            mycursor.close()
+
+            img=cv2.imread("./app/static/img/beyaz1.jpg")
+            cv2.rectangle(img, (310,40), (380,110), (0,255,0), 2)
+
+            ###RECTANGLE
+            cv2.rectangle(img, (125,320), (195,390), (0,255,0), 2)
+            cv2.rectangle(img, (490,320), (560,390), (0,255,0), 2)
+
+            start_point= (222,193)
+
+
+            end_point = (176,253)
+
+            image = cv2.line(img, start_point, end_point, (0,255,0), 2)
+
+            #######################################
+            start_point2= (471,193)
+
+
+            end_point2 = (523,253)
+
+            image = cv2.line(img, start_point2, end_point2, (0,255,0), 2)
+
+
+##PUTTEXT
+
+            try:
+                    
+                cv2.putText(img=img, text='Referans No : '+str(ref), org=(225, 140), fontFace=cv2.FONT_HERSHEY_TRIPLEX, fontScale=0.5, color=(0, 0, 0),thickness=1)
+
+                cv2.putText(img=img, text='Mail No : '+str(mail_array[0]), org=(225, 175), fontFace=cv2.FONT_HERSHEY_TRIPLEX, fontScale=0.5, color=(0, 0, 0),thickness=1)
+
+            except Exception as e:
+                print(e)
+
+            try:
+                cv2.putText(img=img, text='Referans No : '+str(ilk_ref[1]), org=(55, 275), fontFace=cv2.FONT_HERSHEY_TRIPLEX, fontScale=0.5, color=(0, 0, 0),thickness=1)
+                cv2.putText(img=img, text='Mail No : '+str(mail_array[1]), org=(55, 305), fontFace=cv2.FONT_HERSHEY_TRIPLEX, fontScale=0.5, color=(0, 0, 0),thickness=1)
+
+            except Exception as e:
+                print(e)
+
+            try:
+                cv2.putText(img=img, text='Referans No : '+str(ilk_ref[2]), org=(415, 275), fontFace=cv2.FONT_HERSHEY_TRIPLEX, fontScale=0.5, color=(0, 0, 0),thickness=1)
+                cv2.putText(img=img, text='Mail No : '+str(mail_array[2]), org=(415, 305), fontFace=cv2.FONT_HERSHEY_TRIPLEX, fontScale=0.5, color=(0, 0, 0),thickness=1)
+
+            except Exception as e:
+                print(e)
+            
+            dosya_path = "./app/static/agac/"+str(session['referans'])+".jpg"
+            cv2.imwrite(str(dosya_path),img)
+            dosya_path = "./static/agac/"+str(session['referans'])+".jpg"
+            
+
+            return render_template("upload_file.html",dosya_path=dosya_path,atanan_referans=atanan_referans,ust_referans=ust_referans,username=username,mail_array=mail_array,tel_array=tel_array)
+
 
     return render_template("upload_file.html",atanan_referans=atanan_referans,ust_referans=ust_referans,username=username,mail_array=mail_array,tel_array=tel_array)
 @app.route("/", methods=['GET', 'POST'])
@@ -813,8 +885,8 @@ def singup():
             sehir =request.form.get("sehir")
             print("sehir",sehir)
             # print(email,password,name_surname)
-            isim=name_surname.split()[0]
-            print(isim)
+            
+            
             
 
 
@@ -836,11 +908,11 @@ def singup():
                     new_ref=str(ref_number)+"2"
                 else:
                     kayit_durumu="Referans Numarası Hatalı oluşturulamadi"
-                    return render_template("singup.html",kayit_durumu=kayit_durumu)
+                    return render_template("kayit_ol.html",kayit_durumu=kayit_durumu)
             except Exception as e:
                 print(e)
                 kayit_durumu="Kayit oluşturulamadi"
-                return render_template("singup.html",kayit_durumu=kayit_durumu)
+                return render_template("kayit_ol.html",kayit_durumu=kayit_durumu)
             # if not len(ref_number)==9:
             #     new_Ref=(str(random.random())[2:11])
             #     # print("burada")
@@ -864,7 +936,7 @@ def singup():
                 mycursor = mydb.cursor()
 
                 sql = "INSERT INTO users2 (name_surname,tc,mail,password,tel,referans,atanan_ref,kayit_tarihi,yetki,yatirilan_para,ust_referans,sehir) VALUES (%s, %s,%s, %s,%s,%s,%s,%s,%s,%s,%s,%s)"
-                val = (str(isim),str(tc),str(email),str(password),str(tel),str(ref_number),str(new_ref),str(datetime.now()),str(0),str(0),str(ust_ref_number),str(sehir))
+                val = (str(name_surname),str(tc),str(email),str(password),str(tel),str(ref_number),str(new_ref),str(datetime.now()),str(0),str(0),str(ust_ref_number),str(sehir))
                 mycursor.execute(sql, val)
 
                 mydb.commit()
