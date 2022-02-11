@@ -2,6 +2,8 @@ mysql-connector-python
 secure-smtplib
 Flask
 pandas
+opencv-python
+
 
 
 
