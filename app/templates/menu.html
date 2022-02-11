@@ -45,6 +45,7 @@
   <div class="container">
 <div id="app">
   <center><b>Kazanılan Para : <span>{{ session['puan'] }}</span></b></center>
+  <center><b>Durum : <span>{{ session['atanan_para'] }}</span></b></center>
   <nav id="navbar-main" class="navbar is-fixed-top">
     <div class="navbar-brand">
     
@@ -178,6 +179,12 @@
           <a href="forms" class="has-icon">
             <span class="icon"><i class="mdi mdi-square-edit-outline"></i></span>
             <span class="menu-item-label">İletişim & Destek</span>
+          </a>
+        </li>
+        <li>
+          <a href="singup" class="has-icon">
+            <span class="icon"><i class="mdi mdi-square-edit-outline"></i></span>
+            <span class="menu-item-label">Üye Ekleme</span>
           </a>
         </li>
       </ul>

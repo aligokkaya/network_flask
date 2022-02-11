@@ -1,0 +1,293 @@
+
+{%extends "menu.html"%}
+
+{%block header%}
+Üye Ekleme Sayfası
+
+{%endblock%}
+
+{%block body%}
+<style>
+
+
+  * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      text-decoration: none;
+    }
+    body {
+      background-color: #f8f8f8;
+      font-family: Merriweather;
+    }
+
+    .container-left {
+      width: 390px;
+      height:800px;
+      margin: 150px auto;
+      padding: 20px;
+      border-radius: 10px;
+      border: 1px solid #d3d3d5;
+      background-color: #fff;
+    }
+    /* part-one-left-start  */
+    .wrapper-left .part-one {
+      width: 100%;
+      height: 100px;
+      border-radius: 10px;
+      background-color: #eaf2ff;
+      padding: 30px 20px;
+      margin-bottom: 40px;
+    }
+    .wrapper-left .part-one h3 {
+      color: #195bc9;
+      margin-bottom: 4px;
+    }
+    .wrapper-left .part-one p {
+      color: #02021a;
+    }
+
+    .wrapper-left .inp form {
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+    .wrapper-left .inp form .inp-left {
+      border: 0;
+      outline: none;
+      width: 100%;
+      border: 1px solid #d7d6db;
+      border-radius: 1px;
+      height: 40px;
+      margin: 1px 0;
+    }
+    .wrapper-left .inp form input::placeholder {
+      font-size: 12px;
+      color: #9d9d9f;
+    }
+    .wrapper-left .inp {
+      position: relative;
+    }
+    .wrapper-left .inp form input[type="email"],
+    input[type="password"] {
+      padding: 0 1px;
+    }
+    .wrapper-left .inp form input[type="email"]:focus {
+      border: 1px solid #115efa;
+    }
+    .wrapper-left .inp form input[type="password"]:focus {
+      border: 1px solid #115efa;
+    }
+    .wrapper-left .inp form i {
+      color: #9a9a9c;
+      position: absolute;
+    }
+    .wrapper-left .inp form i.pass {
+      top: 135.5px;
+      left: 11px;
+    }
+    .wrapper-left .inp form i.envelope {
+      left: 11px;
+      top: 48.2px;
+    }
+    .wrapper-left .inp form label {
+      color: #01000d;
+    }
+    .wrapper-left .buttons {
+      display: flex;
+      flex-direction: column;
+      margin: 15px 0;
+      gap: 12px;
+    }
+    .wrapper-left .buttons .btn-one,
+    .btn-two {
+      border: 0;
+      cursor: pointer;
+      width: 100%;
+      height: 45px;
+      border-radius: 25px;
+    }
+    .wrapper-left .buttons .btn-one {
+      background-color: #115efa;
+      color: #fff;
+      font-size: 16px;
+      font-weight: 500;
+    }
+    .wrapper-left .buttons .btn-two {
+      background-color: #fff;
+      border: 1px solid #d9d9db;
+      font-size: 16px;
+      margin-bottom: 5px;
+    }
+
+    .wrapper-left .check label {
+      position: absolute;
+      cursor: pointer;
+      font-size: 12px;
+      line-height: 21px;
+      text-align: center;
+      padding: 0 33px;
+      text-align: left;
+    }
+    .wrapper-left .check label input[type="checkbox"] {
+      position: absolute;
+      opacity: 0;
+      cursor: pointer;
+      height: 0;
+      width: 0;
+    }
+
+    .wrapper-left .check label span {
+      position: absolute;
+      top: 10px;
+      left: 0;
+      height: 20px;
+      width: 20px;
+      border-radius: 5px;
+      border: 1px solid #cfced3;
+    }
+    label:hover input ~ .checkmark {
+      background-color: #ccc;
+    }
+    label input:checked ~ .checkmark {
+      background-color: #115efa;
+    }
+    .checkmark::after {
+      content: "";
+      position: absolute;
+      display: none;
+    }
+    label input:checked ~ .checkmark:after {
+      display: block;
+    }
+    label .checkmark::after {
+      left: 5.5px;
+      top: 1px;
+      width: 5px;
+      height: 10px;
+      border: solid white;
+      border-width: 0 3px 3px 0;
+      -webkit-transform: rotate(45deg);
+      -ms-transform: rotate(45deg);
+      transform: rotate(45deg);
+    }
+    .wrapper-left .down {
+      position: relative;
+      font-size: 14px;
+      top: 70px;
+    }
+    .wrapper-left .down p {
+      display: inline-block;
+    }
+    /* part-one-left-end  */
+</style>
+  <div class="card has-table">
+    <header class="card-header">
+     
+    </header>
+  </div>
+  
+  <div class="container">
+    <!-- section-left-start -->
+    <div class="container-left">
+      <div class="wrapper-left">
+        <div class="part-one">
+          <h3>Interactionnetwork Sosyal Etkileşim Platformuna Hoşgeldin</h3>
+          <p>Hesap Oluştur</p>
+        </div>
+        <div class="inp">
+          <!-- <form action=""> -->
+          <form method="POST" action="/singup" name="singup">
+            <label for="" class="isim">İsim Soyisim* </label>
+           
+            <input
+              class="inp-left"
+              type="text"
+              placeholder="İsim Soyisim"
+              name="name_surname"
+              id="name_surname"
+              required
+            />
+            <label for="" class="email">Şehir* </label>
+            <input
+              class="inp-left"
+              type="text"
+              placeholder="İstanbul "
+              name="sehir"
+              id="sehir"
+              required
+            />
+           
+           
+          
+            <label for="" class="email">Mail* </label>
+            <input
+              class="inp-left"
+              type="email"
+              placeholder="blablalbla@gmail.com"
+              name="email"
+              id="email"
+              required
+            />
+            <label for="" class="pass">Şifre* </label>
+            <input
+              class="inp-left"
+              type="password"
+              placeholder="8+ characters, 2 numbers"
+              name="pass"
+              required
+              id="pass"
+            />
+            <label for="" class="pass">Telefon* </label>
+           
+            <input
+              class="inp-left"
+              type="text"
+              placeholder="Referans Numarasi"
+              name="tel"
+              required
+              id="tel"
+            />
+            <label for="" class="pass">Üst Referans </label>
+           
+            <input
+              class="inp-left"
+              type="text"
+              placeholder="Üst Referans Numarasi"
+              name="ustref"
+              id="ustref"
+            />
+            <label for="" class="pass">Referans </label>
+           
+            <input
+              class="inp-left"
+              type="text"
+              placeholder="Referans Numarasi"
+              name="ref"
+              id="ref"
+            />
+          </br>
+          <input type="checkbox" id="KVKk" name="KVKk" value="KVKk" required>
+          <a href="./static/sozlesmeler/KVKK.docx">KVKK SÖZLEŞMESİ</a>
+          <input type="checkbox" id="UYARILAR" name="UYARILAR" value="UYARILAR"required >
+          <a href="./static/sozlesmeler/UYARILAR.docx">UYARILAR</a>
+          <input type="checkbox" id="KULLANIM" name="KULLANIM" value="KULLANIM"required >
+          <a href="./static/sozlesmeler/Web sitesi Kullanım ve Üyelik Sözleşmesi.docx">WEB SITESI KULLANIM VE ÜYELIK SÖZLEŞMESI</a>
+
+        </div>
+        <div class="buttons">
+          <button   name="button" type="submit" value="value" class="btn-one">Hesap Oluştur</button>
+          <p>{{kayit_durumu}}</p>
+        </div>
+        
+      </div>
+    </div>
+  </form>
+  </div>
+
+
+
+
+</form>
+
+{%endblock%}

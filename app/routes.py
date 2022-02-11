@@ -130,7 +130,7 @@ def upload_file():
             # print("girdi")
             mycursor = mydb.cursor(dictionary=True)
             # print(str(session['atanan_ref']))
-            mycursor.execute("SELECT * FROM users2 WHERE atanan_ref LIKE '"+str(session['atanan_ref'])+"%"+ "'")
+            mycursor.execute("SELECT * FROM users2 WHERE ust_referans LIKE '"+str(session['atanan_ref'])+"%"+ "'")
             
             myresult = mycursor.fetchall()
             # print(myresult)
@@ -139,7 +139,7 @@ def upload_file():
             print("--------------")
             print(dataframe)
             try:    
-                dataframe=(dataframe.iloc[1::])
+                # dataframe=(dataframe.iloc[1::])
                 for i in range(len(dataframe)):
                     
                     username.append(str(dataframe['name_surname'].iloc[i]))
@@ -359,6 +359,23 @@ def yonetim():
                 session['puan']-=int(cikarilan_para)
             except Exception as e:
                 print(e)
+
+            try:
+
+                mycursor = mydb.cursor()
+                sql = "UPDATE users2 SET yatirilan_para = '"+str(cikarilan_para)+"' WHERE mail = '"+str(mail_cikarma)+"'"
+
+                # sql = "INSERT INTO money (mail,para,durum) VALUES (%s, %s,%s)"
+                # val = (str(mail_cikarma),str(cikarilan_para),str("cikarma"))
+                mycursor.execute(sql)
+
+                mydb.commit()
+                print(mycursor.rowcount, "record inserted.")
+                mycursor.close()
+               
+            except Exception as e:
+                print(e)
+
         elif request.form.get("button") == "cekim_istek":
 
             date1=request.form.get("date1")
@@ -458,7 +475,7 @@ def sosyalmedya():
 
                 print(len(myresult))
 
-                if len(myresult)<8:
+                if len(myresult)<2:
                     try:
 
                         mycursor = mydb.cursor()
@@ -724,12 +741,17 @@ def login():
             mycursor.execute(sql)
             myresult = mycursor.fetchall()
             # print("---------")
-            # print(len(myresult))
+            print(len(myresult))
             # print("---------")
-            # print(myresult)
+            print(myresult)
             for i in range(len(myresult)):
-                toplam_para=toplam_para+myresult[i]['yatirilan_para']
-                print("---------")
+                
+                if str(myresult[i]['yatirilan_para'])[0]=="-":
+                    pass
+                else:
+
+                    toplam_para=toplam_para+myresult[i]['yatirilan_para']
+                    print("---------")
 
 
             print("---------")
@@ -774,6 +796,7 @@ def login():
 
 
 @app.route("/singup", methods=['GET', 'POST'])
+@login_required
 def singup():
     kayit_durumu = ""
     new_ref=""
@@ -786,7 +809,9 @@ def singup():
             tel = request.form.get("tel")
             ref_number = request.form.get("ref")
             ust_ref_number = request.form.get("ustref")
-            print("ref number",ref_number)
+
+            sehir =request.form.get("sehir")
+            print("sehir",sehir)
             # print(email,password,name_surname)
             isim=name_surname.split()[0]
             print(isim)
@@ -838,17 +863,17 @@ def singup():
 
                 mycursor = mydb.cursor()
 
-                sql = "INSERT INTO users2 (name_surname,tc,mail,password,tel,referans,atanan_ref,kayit_tarihi,yetki,yatirilan_para,ust_referans) VALUES (%s, %s,%s, %s,%s,%s,%s,%s,%s,%s,%s)"
-                val = (str(isim),str(tc),str(email),str(password),str(tel),str(ref_number),str(new_ref),str(datetime.now()),str(0),str(0),str(ust_ref_number))
+                sql = "INSERT INTO users2 (name_surname,tc,mail,password,tel,referans,atanan_ref,kayit_tarihi,yetki,yatirilan_para,ust_referans,sehir) VALUES (%s, %s,%s, %s,%s,%s,%s,%s,%s,%s,%s,%s)"
+                val = (str(isim),str(tc),str(email),str(password),str(tel),str(ref_number),str(new_ref),str(datetime.now()),str(0),str(0),str(ust_ref_number),str(sehir))
                 mycursor.execute(sql, val)
 
                 mydb.commit()
                 print(mycursor.rowcount, "record inserted.")
                 mycursor.close()
                 kayit_durumu = "Kayit oluşturuldu"
-                # flash("Kayit oluşturuldu",'info')
-                return redirect(url_for("login"))          
-    return render_template("singup.html",kayit_durumu=kayit_durumu)
+                flash("Kayit oluşturuldu",'info')
+                return redirect(url_for("index"))          
+    return render_template("kayit_ol.html",kayit_durumu=kayit_durumu)
 
 
 
