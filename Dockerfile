@@ -3,6 +3,7 @@ FROM debian:latest
 
 RUN apt-get update && apt-get install -y apache2 \
     ssmtp\
+    openssl\
     mailutils \
     libapache2-mod-wsgi-py3 \
     build-essential \
@@ -20,6 +21,7 @@ RUN set -eux; \
         apt-get update; \
         apt-get install -y --no-install-recommends gcc; \
     apt-get install -y libleptonica-dev; \
+    apt-get install -y ca-certificates ;\
 	apt-get install -y libevent-dev; \
     apt-get install -y poppler-utils; \
         apt-get -y  autoremove gcc; \
@@ -34,8 +36,9 @@ RUN set -eux; \
 	rm -rf /var/lib/apt/lists/*
 
 RUN apt-get update -y
-RUN apt-get install -y gir1.2-gobject-2.0 
-RUN apt-get update -y
+
+# RUN apt-get install -y gir1.2-gobject-2.0 
+# RUN apt-get update -y
 RUN apt-get install -y libpango-1.0-0
 RUN apt-get install -y libpangoft2-1.0-0
 
@@ -47,10 +50,22 @@ RUN pip install -r /var/www/apache-flask/app/requirements.txt
 
 # RUN pip install https://github.com/JustAnotherArchivist/snscrape
 # Copy over the apache configuration file and enable the site
+
+# COPY myCA.pem  /usr/local/share/ca-certificates/myCA.crt
+
+# RUN apt-get update -y
+
+
+COPY server.crt /etc/apache2/ssl/server.crt
+COPY server.key /etc/apache2/ssl/server.key
+COPY privkey.pem /etc/apache2/ssl/privkey.pem
+# COPY inster-ca.crt /etc/apache2/ssl/inter-ca.crt
+
+
 COPY ./apache-flask.conf /etc/apache2/sites-available/apache-flask.conf
 RUN a2ensite apache-flask
 RUN a2enmod headers
-
+RUN a2enmod ssl
 # Copy over the wsgi file
 COPY ./apache-flask.wsgi /var/www/apache-flask/apache-flask.wsgi
 
@@ -74,3 +89,4 @@ WORKDIR /var/www/apache-flask
 RUN ["chown", "-R", "www-data:www-data", "/var/www"]
 
 CMD  /usr/sbin/apache2ctl -D FOREGROUND
+
